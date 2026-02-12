@@ -1,38 +1,32 @@
 #ifndef CONST_HPP
 #define CONST_HPP
 
+
 #include <cstdint>
 
 
-/**
- * creating alignas(32) inline constexpr uint32_t... to have:
- * - predictable alignment
- * - ideal for SIMD/cache-line
- * - zero-overhead
- * - header-only + ODR-safe
- */
-namespace sha2::constants {
+namespace SHA2::CONST {
     static_assert(sizeof(uint32_t) == 4);
     static_assert(sizeof(uint64_t) == 8);
 
     /** sha-224/256 k for core function */
     alignas(32) inline constexpr uint32_t SHA256_K[64] = {
-        0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
-        0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-        0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
-        0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-        0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
-        0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-        0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
-        0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-        0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
-        0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-        0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
-        0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-        0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
-        0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-        0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-        0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+        0x428a2f98UL, 0x71374491UL, 0xb5c0fbcfUL, 0xe9b5dba5UL,
+        0x3956c25bUL, 0x59f111f1UL, 0x923f82a4UL, 0xab1c5ed5UL,
+        0xd807aa98UL, 0x12835b01UL, 0x243185beUL, 0x550c7dc3UL,
+        0x72be5d74UL, 0x80deb1feUL, 0x9bdc06a7UL, 0xc19bf174UL,
+        0xe49b69c1UL, 0xefbe4786UL, 0x0fc19dc6UL, 0x240ca1ccUL,
+        0x2de92c6fUL, 0x4a7484aaUL, 0x5cb0a9dcUL, 0x76f988daUL,
+        0x983e5152UL, 0xa831c66dUL, 0xb00327c8UL, 0xbf597fc7UL,
+        0xc6e00bf3UL, 0xd5a79147UL, 0x06ca6351UL, 0x14292967UL,
+        0x27b70a85UL, 0x2e1b2138UL, 0x4d2c6dfcUL, 0x53380d13UL,
+        0x650a7354UL, 0x766a0abbUL, 0x81c2c92eUL, 0x92722c85UL,
+        0xa2bfe8a1UL, 0xa81a664bUL, 0xc24b8b70UL, 0xc76c51a3UL,
+        0xd192e819UL, 0xd6990624UL, 0xf40e3585UL, 0x106aa070UL,
+        0x19a4c116UL, 0x1e376c08UL, 0x2748774cUL, 0x34b0bcb5UL,
+        0x391c0cb3UL, 0x4ed8aa4aUL, 0x5b9cca4fUL, 0x682e6ff3UL,
+        0x748f82eeUL, 0x78a5636fUL, 0x84c87814UL, 0x8cc70208UL,
+        0x90befffaUL, 0xa4506cebUL, 0xbef9a3f7UL, 0xc67178f2UL,
     };
 
     /** sha-384/512 k for core function */
@@ -61,14 +55,14 @@ namespace sha2::constants {
 
     /** initial SHA224 state. Bits 32..64 of frac part of sqrt of primes 23..53 */
     alignas(32) inline constexpr uint32_t SHA224_IV[8] = {
-        0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 
-        0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4,
+        0xc1059ed8UL, 0x367cd507UL, 0x3070dd17UL, 0xf70e5939UL, 
+        0xffc00b31UL, 0x68581511UL, 0x64f98fa7UL, 0xbefa4fa4UL,
     };
 
     /** initial SHA256 state. Bits 0..32 of frac part of sqrt of primes 2..19 */
     alignas(32) inline constexpr uint32_t SHA256_IV[8] = {
-        0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-        0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
+        0x6a09e667UL, 0xbb67ae85UL, 0x3c6ef372UL, 0xa54ff53aUL,
+        0x510e527fUL, 0x9b05688cUL, 0x1f83d9abUL, 0x5be0cd19UL,
     };
 
     /** initial SHA384 state. Bits 0..64 of frac part of sqrt of primes 23..53 */
@@ -82,6 +76,7 @@ namespace sha2::constants {
         0x6a09e667f3bcc908ULL, 0xbb67ae8584caa73bULL, 0x3c6ef372fe94f82bULL, 0xa54ff53a5f1d36f1ULL,
         0x510e527fade682d1ULL, 0x9b05688c2b3e6c1fULL, 0x1f83d9abfb41bd6bULL, 0x5be0cd19137e2179ULL,
     };
-} // namespace sha2::constants
+};  // namespace SHA2::CONST
+
 
 #endif // CONST_HPP
