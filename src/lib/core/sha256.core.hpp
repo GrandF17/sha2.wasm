@@ -1,5 +1,5 @@
-#ifndef SHA2_CORE_HPP
-#define SHA2_CORE_HPP
+#ifndef SHA256_CORE_HPP
+#define SHA256_CORE_HPP
 
 
 #include <cstdint>
@@ -10,7 +10,7 @@
 #include "../utils.hpp"
 
 
-namespace SHA2::Core {
+namespace SHA256::Core {
   ////////////////////////////////////////////////////////////////
  ///////////////////////// PRIVATE BLOCK ////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -78,21 +78,65 @@ namespace SHA2::Core {
         );
     };
 
+  ////////////////////////////////////////////////////////////////
+ ///////////////////////// PUBLIC BLOCK /////////////////////////
+////////////////////////////////////////////////////////////////
+
     /** 
-     * compression function for blake2b
+     * compression function for sha2
      * @param h - current hash-functioin state
      * @param m - message block
-     * @param t0 - lo counter
-     * @param t1 - hi counter
-     * @param last - last block of message 
      */
-    inline void core32(
-        uint64_t h[8],
-        const uint64_t m[16]
-    ) {
+    inline void core(uint32_t h[8], const uint32_t m[16]) {
+        /** to modify copy of state */
+        uint32_t A = h[0];
+        uint32_t B = h[1];
+        uint32_t C = h[2];
+        uint32_t D = h[3];
+        uint32_t E = h[4];
+        uint32_t F = h[5];
+        uint32_t G = h[6];
+        uint32_t H = h[7];
         
+        /** extend the first 16 words to 64 */
+        uint32_t w[64];
+        memcpy(w, m, 16 * sizeof(uint32_t));
+        
+        for (size_t i = 16; i < 64; ++i) {
+            w[i] = (
+                s0(w[i - 15]) +
+                s1(w[i - 2]) +
+                w[i - 7] +
+                w[i - 16]
+            );
+        };
+
+        /** compress (64 rounds) */
+        for (size_t i = 0; i < 64; ++i) {
+            uint32_t T1 = (H + S1(E) + ch(E, F, G) + SHA2::CONST::K256[i] + w[i]);
+            uint32_t T2 = (S0(A) + maj(A, B, C));
+
+            H = G;
+            G = F;
+            F = E;
+            E = D + T1;
+            D = C;
+            C = B;
+            B = A;
+            A = T1 + T2;
+        };
+
+        /** add result to state */
+        h[0] += A; 
+        h[1] += B; 
+        h[2] += C; 
+        h[3] += D;
+        h[4] += E; 
+        h[5] += F;
+        h[6] += G; 
+        h[7] += H;
     };
-};  // namespace SHA2::Core
+};  // namespace SHA256::Core
 
 
-#endif  // SHA2_CORE_HPP
+#endif  // SHA256_CORE_HPP

@@ -10,7 +10,7 @@ namespace SHA2::CONST {
     static_assert(sizeof(uint64_t) == 8);
 
     /** sha-224/256 k for core function */
-    alignas(32) inline constexpr uint32_t SHA256_K[64] = {
+    alignas(32) inline constexpr uint32_t K256[64] = {
         0x428a2f98UL, 0x71374491UL, 0xb5c0fbcfUL, 0xe9b5dba5UL,
         0x3956c25bUL, 0x59f111f1UL, 0x923f82a4UL, 0xab1c5ed5UL,
         0xd807aa98UL, 0x12835b01UL, 0x243185beUL, 0x550c7dc3UL,
@@ -30,7 +30,7 @@ namespace SHA2::CONST {
     };
 
     /** sha-384/512 k for core function */
-    alignas(64) inline constexpr uint64_t SHA512_K[80] = {
+    alignas(64) inline constexpr uint64_t K512[80] = {
         0x428a2f98d728ae22ULL, 0x7137449123ef65cdULL, 0xb5c0fbcfec4d3b2fULL, 0xe9b5dba58189dbbcULL,
         0x3956c25bf348b538ULL, 0x59f111f1b605d019ULL, 0x923f82a4af194f9bULL, 0xab1c5ed5da6d8118ULL,
         0xd807aa98a3030242ULL, 0x12835b0145706fbeULL, 0x243185be4ee4b28cULL, 0x550c7dc3d5ffb4e2ULL,
@@ -54,25 +54,25 @@ namespace SHA2::CONST {
     };
 
     /** initial SHA224 state. Bits 32..64 of frac part of sqrt of primes 23..53 */
-    alignas(32) inline constexpr uint32_t SHA224_IV[8] = {
+    alignas(32) inline constexpr uint32_t IV224[8] = {
         0xc1059ed8UL, 0x367cd507UL, 0x3070dd17UL, 0xf70e5939UL, 
         0xffc00b31UL, 0x68581511UL, 0x64f98fa7UL, 0xbefa4fa4UL,
     };
 
     /** initial SHA256 state. Bits 0..32 of frac part of sqrt of primes 2..19 */
-    alignas(32) inline constexpr uint32_t SHA256_IV[8] = {
+    alignas(32) inline constexpr uint32_t IV256[8] = {
         0x6a09e667UL, 0xbb67ae85UL, 0x3c6ef372UL, 0xa54ff53aUL,
         0x510e527fUL, 0x9b05688cUL, 0x1f83d9abUL, 0x5be0cd19UL,
     };
 
     /** initial SHA384 state. Bits 0..64 of frac part of sqrt of primes 23..53 */
-    alignas(64) inline constexpr uint64_t SHA384_IV[8] = {
+    alignas(64) inline constexpr uint64_t IV384[8] = {
         0xcbbb9d5dc1059ed8ULL, 0x629a292a367cd507ULL, 0x9159015a3070dd17ULL, 0x152fecd8f70e5939ULL,
         0x67332667ffc00b31ULL, 0x8eb44a8768581511ULL, 0xdb0c2e0d64f98fa7ULL, 0x47b5481dbefa4fa4ULL,
     };
 
     /** initial SHA512 state. Bits 0..64 of frac part of sqrt of primes 2..19 */
-    alignas(64) inline constexpr uint64_t SHA512_IV[8] = {
+    alignas(64) inline constexpr uint64_t IV512[8] = {
         0x6a09e667f3bcc908ULL, 0xbb67ae8584caa73bULL, 0x3c6ef372fe94f82bULL, 0xa54ff53a5f1d36f1ULL,
         0x510e527fade682d1ULL, 0x9b05688c2b3e6c1fULL, 0x1f83d9abfb41bd6bULL, 0x5be0cd19137e2179ULL,
     };
