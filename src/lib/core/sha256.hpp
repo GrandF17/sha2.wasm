@@ -12,12 +12,11 @@
 
 
 namespace SHA256 {
-    /** 432 bytes of CTX */
+    /** 176 bytes of CTX */
     struct CTX {
         uint32_t h[8];
         uint8_t  buf[64];
         uint32_t m[16];
-        uint32_t w[64];
         uint64_t bitlen;
         size_t   buf_len;
     };
@@ -30,7 +29,7 @@ namespace SHA256 {
             ctx.m[i] = Utils::to32BE(ctx.buf + (i << 2));
         };
 
-        SHA256::Core::core(ctx.h, ctx.m, ctx.w);
+        SHA256::Core::core(ctx.h, ctx.m);
     };
 
     inline void update(CTX &ctx, const uint8_t *message, size_t len) {

@@ -12,12 +12,11 @@
 
 
 namespace SHA512 {
-    /** 976 bytes of CTX */
+    /** 336 bytes of CTX */
     struct CTX {
         uint64_t h[8];
         uint8_t  buf[128];
         uint64_t m[16];
-        uint64_t w[80];
         uint64_t bitlen;
         size_t   buf_len;
     };
@@ -30,7 +29,7 @@ namespace SHA512 {
             ctx.m[i] = Utils::to64BE(ctx.buf + (i << 3));
         };
 
-        SHA512::Core::core(ctx.h, ctx.m, ctx.w);
+        SHA512::Core::core(ctx.h, ctx.m);
     };
 
     inline void update(CTX &ctx, const uint8_t *message, size_t len) {
