@@ -85,7 +85,7 @@ namespace SHA512::Core {
     /** 
      * compression function for sha2
      * @param h - current hash-functioin state
-     * @param m - message block
+     * @param m - message block in Big-endian fromat
      */
     inline void core(uint64_t h[8], const uint64_t m[16]) {
         /** to modify copy of state */
@@ -102,6 +102,7 @@ namespace SHA512::Core {
         uint64_t w[80];
         memcpy(w, m, 16 * sizeof(uint64_t));
         
+        #pragma unroll
         for (size_t i = 16; i < 80; ++i) {
             w[i] = (
                 s0(w[i - 15]) +
@@ -112,6 +113,7 @@ namespace SHA512::Core {
         };
 
         /** compress (80 rounds) */
+        #pragma unroll
         for (size_t i = 0; i < 80; ++i) {
             uint64_t T1 = (H + S1(E) + ch(E, F, G) + SHA2::CONST::K512[i] + w[i]);
             uint64_t T2 = (S0(A) + maj(A, B, C));

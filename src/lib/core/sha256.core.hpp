@@ -16,7 +16,7 @@ namespace SHA256::Core {
 ////////////////////////////////////////////////////////////////
 
     /** local Sigma0 (SHA-224/256) */
-    inline uint32_t S0(const uint32_t x) {
+    inline uint32_t S0(uint32_t x) {
         return (
             (x << 30 | x >>  2) ^   // right rotate (2)
             (x << 19 | x >> 13) ^   // right rotate (13)
@@ -25,7 +25,7 @@ namespace SHA256::Core {
     };
 
     /** local Sigma1 (SHA-224/256) */
-    inline uint32_t S1(const uint32_t x) {
+    inline uint32_t S1(uint32_t x) {
         return (
             (x << 26 | x >>  6) ^  // right rotate (6)
             (x << 21 | x >> 11) ^  // right rotate (11)
@@ -34,7 +34,7 @@ namespace SHA256::Core {
     };
 
     /** local sigma0 (SHA-224/256) */
-    inline uint32_t s0(const uint32_t x) {
+    inline uint32_t s0(uint32_t x) {
         return (
             (x << 25 | x >>  7) ^   // right rotate (7)
             (x << 14 | x >> 18) ^   // right rotate (18)
@@ -43,7 +43,7 @@ namespace SHA256::Core {
     };
 
     /** local sigma1 (SHA-224/256) */
-    inline uint32_t s1(const uint32_t x) {
+    inline uint32_t s1(uint32_t x) {
         return (
             (x << 15 | x >> 17) ^   // right rotate (17)
             (x << 13 | x >> 19) ^   // right rotate (19)
@@ -55,27 +55,13 @@ namespace SHA256::Core {
      * local Majority (SHA-224/256) 
      * canonical: (x & y) ^ (x & z) ^ (y & z)
     */
-    inline uint32_t maj(
-        const uint32_t x,
-        const uint32_t y,
-        const uint32_t z
-    ) {
-        return (
-            (x & y) | 
-            (z & (x | y))
-        );
+    inline uint32_t maj(uint32_t x, uint32_t y, uint32_t z) {
+        return ((x & y) | (z & (x | y)));
     };
 
     /** local Choose (SHA-224/256) */
-    inline uint32_t ch(
-        const uint32_t x,
-        const uint32_t y,
-        const uint32_t z
-    ) {
-        return (
-            ( x & y) ^ 
-            (~x & z)
-        );
+    inline uint32_t ch(uint32_t x, uint32_t y, uint32_t z) {
+        return (( x & y) ^ (~x & z));
     };
 
   ////////////////////////////////////////////////////////////////
@@ -85,7 +71,7 @@ namespace SHA256::Core {
     /** 
      * compression function for sha2
      * @param h - current hash-functioin state
-     * @param m - message block
+     * @param m - message block in Big-endian fromat
      */
     inline void core(uint32_t h[8], const uint32_t m[16]) {
         /** to modify copy of state */
@@ -102,6 +88,7 @@ namespace SHA256::Core {
         uint32_t w[64];
         memcpy(w, m, 16 * sizeof(uint32_t));
         
+        #pragma unroll
         for (size_t i = 16; i < 64; ++i) {
             w[i] = (
                 s0(w[i - 15]) +
@@ -112,6 +99,7 @@ namespace SHA256::Core {
         };
 
         /** compress (64 rounds) */
+        #pragma unroll
         for (size_t i = 0; i < 64; ++i) {
             uint32_t T1 = (H + S1(E) + ch(E, F, G) + SHA2::CONST::K256[i] + w[i]);
             uint32_t T2 = (S0(A) + maj(A, B, C));
