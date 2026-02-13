@@ -87,7 +87,12 @@ namespace SHA512 {
     };
 
     inline void destroy(CTX &ctx) {
-        /** secure zeroization of &ctx */
+        volatile uint8_t *p = (volatile uint8_t *)&ctx;
+        for (size_t i = 0; i < sizeof(ctx); ++i) {
+            p[i] = 0;
+        };
+
+        /** secure zeroization of CTX */
         explicit_bzero(&ctx, sizeof(ctx));
     };
 };  // namespace SHA512
