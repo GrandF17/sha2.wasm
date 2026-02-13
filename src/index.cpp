@@ -4,16 +4,16 @@
 #include <chrono>
 #include <vector>
 
-#include "./lib/core/sha224.hpp"
+#include "./lib/core/sha512.hpp"
 
 using namespace std;
 
 int main() {
     using clock = std::chrono::high_resolution_clock;
 
-    SHA256::CTX c;
+    SHA512::CTX c;
 
-    size_t msg_len = 1024ull * 1024ull * 1024ull; // 1 GB
+    size_t msg_len = 0; // 1 GB
 
     // НЕ на стеке!
     std::vector<uint8_t> msg(msg_len, 0);
@@ -23,7 +23,7 @@ int main() {
 
     auto start = clock::now();
 
-    SHA256::init(c);
+    SHA512::init(c);
 
     size_t total = 1ull << 30;
     size_t chunk = 1ull << 20; // 1MB
@@ -31,10 +31,10 @@ int main() {
     std::vector<uint8_t> buf(chunk, 0);
 
     for (size_t i = 0; i < total; i += chunk)
-        SHA256::update(c, buf.data(), chunk);
+        SHA512::update(c, buf.data(), chunk);
 
-    SHA256::digest(c, out);
-    SHA256::destroy(c);
+    SHA512::digest(c, out);
+    SHA512::destroy(c);
 
     auto end = clock::now();
 
@@ -45,7 +45,7 @@ int main() {
     double speed = (double)msg_len / (1024.0 * 1024.0) / diff.count();
     cout << "Speed: " << speed << " MB/s\n\n";
 
-    for (int i = 0; i < 28; ++i) {
+    for (int i = 0; i < 64; ++i) {
         cout << hex << setw(2) << setfill('0')
              << static_cast<int>(out[i]) << " ";
     }

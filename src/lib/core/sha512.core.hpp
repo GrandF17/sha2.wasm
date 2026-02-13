@@ -16,7 +16,7 @@ namespace SHA512::Core {
 ////////////////////////////////////////////////////////////////
 
     /** local Sigma0 (SHA-384/512) */
-    inline uint64_t S0(const uint64_t x) {
+    inline uint64_t S0(const uint64_t &x) {
         return (
             (x << 36 | x >> 28) ^   // right rotate (28)
             (x << 30 | x >> 34) ^   // right rotate (34)
@@ -25,7 +25,7 @@ namespace SHA512::Core {
     };
 
     /** local Sigma1 (SHA-384/512) */
-    inline uint64_t S1(const uint64_t x) {
+    inline uint64_t S1(const uint64_t &x) {
         return (
             (x << 50 | x >> 14) ^  // right rotate (14)
             (x << 46 | x >> 18) ^  // right rotate (18)
@@ -34,7 +34,7 @@ namespace SHA512::Core {
     };
 
     /** local sigma0 (SHA-384/512) */
-    inline uint64_t s0(const uint64_t x) {
+    inline uint64_t s0(const uint64_t &x) {
         return (
             (x << 63 | x >>  1) ^   // right rotate (1)
             (x << 56 | x >>  8) ^   // right rotate (8)
@@ -43,7 +43,7 @@ namespace SHA512::Core {
     };
 
     /** local sigma1 (SHA-384/512) */
-    inline uint64_t s1(const uint64_t x) {
+    inline uint64_t s1(const uint64_t &x) {
         return (
             (x << 45 | x >> 19) ^   // right rotate (19)
             (x <<  3 | x >> 61) ^   // right rotate (61)
@@ -56,9 +56,9 @@ namespace SHA512::Core {
      * canonical: (x & y) ^ (x & z) ^ (y & z)
     */
     inline uint64_t maj(
-        const uint64_t x,
-        const uint64_t y,
-        const uint64_t z
+        const uint64_t &x,
+        const uint64_t &y,
+        const uint64_t &z
     ) {
         return (
             (x & y) | 
@@ -68,9 +68,9 @@ namespace SHA512::Core {
 
     /** local Choose (SHA-384/512) */
     inline uint64_t ch(
-        const uint64_t x,
-        const uint64_t y,
-        const uint64_t z
+        const uint64_t &x,
+        const uint64_t &y,
+        const uint64_t &z
     ) {
         return (
             ( x & y) ^ 
@@ -87,7 +87,7 @@ namespace SHA512::Core {
      * @param h - current hash-functioin state
      * @param m - message block in Big-endian fromat
      */
-    inline void core(uint64_t h[8], const uint64_t m[16]) {
+    inline void core(uint64_t h[8], const uint64_t m[16], uint64_t w[80]) {
         /** to modify copy of state */
         uint64_t A = h[0];
         uint64_t B = h[1];
@@ -99,7 +99,6 @@ namespace SHA512::Core {
         uint64_t H = h[7];
         
         /** extend the first 16 words to 80 */
-        uint64_t w[80];
         memcpy(w, m, 16 * sizeof(uint64_t));
         
         #pragma unroll

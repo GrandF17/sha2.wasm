@@ -24,6 +24,7 @@ namespace SHA256 {
 
     /** safe transform to Big-Endian words and running core after */
     inline void transform(CTX &ctx) {
+        #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 4) ~ (i << 2) */
             ctx.m[i] = Utils::to32BE(ctx.buf + (i << 2));
