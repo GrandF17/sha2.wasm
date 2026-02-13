@@ -88,7 +88,6 @@ namespace SHA512::Core {
      * @param m - message block in Big-endian fromat
      */
     inline void core(uint64_t h[8], const uint64_t m[16], uint64_t w[80]) {
-        std::cout << "CORE" << std::endl;
         /** to modify copy of state */
         uint64_t A = h[0];
         uint64_t B = h[1];
