@@ -9,27 +9,27 @@
 
 
 namespace SHA224 {
-    inline void init(SHA256::ctx& ctx) {
+    inline void init(SHA256::CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV224, 32);
         ctx.bitlen = 0;
         ctx.buf_len = 0;
     };
 
     inline void update(
-        SHA256::ctx& ctx,
+        SHA256::CTX &ctx,
         const uint8_t* message,
         size_t len
     ) {
         SHA256::update(ctx, message, len);
     };
 
-    inline void digest(SHA256::ctx& ctx, uint8_t out[28]) {
+    inline void digest(SHA256::CTX &ctx, uint8_t out[28]) {
         uint8_t tmp[32];
         SHA256::digest(ctx, tmp);
         memcpy(out, tmp, 28 * sizeof(uint8_t));
     };
 
-    inline void destroy(SHA256::ctx& ctx) {
+    inline void destroy(SHA256::CTX &ctx) {
         SHA256::destroy(ctx);
     };
 };  // namespace SHA224
