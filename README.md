@@ -77,42 +77,42 @@ import createModule from './lib/sha2.web';
 
 
 function SHA2() {
-    (async () => {
-      const wasm = await createModule();
+  (async () => {
+    const wasm = await createModule();
 
-      /* message */
-      const message = new Uint8Array([
-          0x61, 0x62, 0x63
-      ]);
-      const messageLen = message.length;
-      const messagePtr = wasm._malloc(messageLen);
+    /* message */
+    const message = new Uint8Array([
+        0x61, 0x62, 0x63
+    ]);
+    const messageLen = message.length;
+    const messagePtr = wasm._malloc(messageLen);
 
-      /** out */
-      const out = new Uint8Array(64);
-      const outLen = out.length;
-      const outPtr = wasm._malloc(outLen);
+    /** out */
+    const out = new Uint8Array(64);
+    const outLen = out.length;
+    const outPtr = wasm._malloc(outLen);
 
-      /** copy to WASM memo */
-      wasm.HEAPU8.set(message, messagePtr);
+    /** copy to WASM memo */
+    wasm.HEAPU8.set(message, messagePtr);
 
-      /** run sha512 hash function */
-      const ctx = wasm._sha512_create();
-      wasm._sha512_update(ctx, messagePtr, messageLen);
-      wasm._sha512_digest(ctx, outPtr);
+    /** run sha512 hash function */
+    const ctx = wasm._sha512_create();
+    wasm._sha512_update(ctx, messagePtr, messageLen);
+    wasm._sha512_digest(ctx, outPtr);
 
-      /** logging the result */
-      const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
-      console.log(
-        "SHA512:",
-        Array.from(result as Uint8Array)
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("")
-      );
+    /** logging the result */
+    const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
+    console.log(
+      "SHA512:",
+      Array.from(result as Uint8Array)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    );
 
-      /** cleanup */
-      wasm._free(messagePtr);
-      wasm._free(outPtr);
-      wasm._sha512_destroy(ctx);
+    /** cleanup */
+    wasm._free(messagePtr);
+    wasm._free(outPtr);
+    wasm._sha512_destroy(ctx);
   })();
 
   return null;
