@@ -100,7 +100,7 @@ namespace SHA256::Core {
         uint32_t w[64] = {0};
         memcpy(w, m, 16 * sizeof(uint32_t));
 
-        /** compress (64 rounds) */
+        /** extend + compress (64 rounds) */
         for (size_t i = 0; i < 64; ++i) {
             /** 1) extend */
             if(i >= 16) {

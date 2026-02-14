@@ -100,7 +100,7 @@ namespace SHA512::Core {
         uint64_t w[80] = {0};
         memcpy(w, m, 16 * sizeof(uint64_t));
 
-        /** compress (80 rounds) */
+        /** extend + compress (80 rounds) */
         for (size_t i = 0; i < 80; ++i) {
             /** 1) extend */
             if(i >= 16) {
