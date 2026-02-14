@@ -38,7 +38,7 @@ namespace SHA512::Core {
         return (
             (x << 63 | x >>  1) ^   // right rotate (1)
             (x << 56 | x >>  8) ^   // right rotate (8)
-            (x >>  7          )     // right shift (7)
+            (          x >>  7)     // right shift (7)
         );
     };
 
@@ -47,7 +47,7 @@ namespace SHA512::Core {
         return (
             (x << 45 | x >> 19) ^   // right rotate (19)
             (x <<  3 | x >> 61) ^   // right rotate (61)
-            (x >>  6          )     // right shift (6)
+            (          x >>  6)     // right shift (6)
         );
     };
 

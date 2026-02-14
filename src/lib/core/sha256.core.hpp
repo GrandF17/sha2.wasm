@@ -38,7 +38,7 @@ namespace SHA256::Core {
         return (
             (x << 25 | x >>  7) ^   // right rotate (7)
             (x << 14 | x >> 18) ^   // right rotate (18)
-            (x >>  3          )     // right shift (3)
+            (          x >>  3)     // right shift (3)
         );
     };
 
@@ -47,7 +47,7 @@ namespace SHA256::Core {
         return (
             (x << 15 | x >> 17) ^   // right rotate (17)
             (x << 13 | x >> 19) ^   // right rotate (19)
-            (x >> 10          )     // right shift (10)
+            (          x >> 10)     // right shift (10)
         );
     };
 
@@ -97,7 +97,7 @@ namespace SHA256::Core {
         uint32_t H = h[7];
         
         /** extend the first 16 words to 64 */
-        uint64_t w[64] = {0};
+        uint32_t w[64] = {0};
         memcpy(w, m, 16 * sizeof(uint32_t));
 
         /** compress (64 rounds) */

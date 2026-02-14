@@ -26,7 +26,7 @@ namespace SHA256 {
         #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 4) ~ (i << 2) */
-            ctx.m[i] = Utils::to32BE(ctx.buf + (i << 2));
+            ctx.m[i] = Utils::BE::to32(ctx.buf + (i << 2));
         };
 
         SHA256::Core::core(ctx.h, ctx.m);
@@ -75,7 +75,7 @@ namespace SHA256 {
         transform(ctx);
 
         for (size_t i = 0; i < 32; ++i) {
-            out[i] = Utils::from32BE(ctx.h, i);
+            out[i] = Utils::BE::from32(ctx.h, i);
         };
     };
 

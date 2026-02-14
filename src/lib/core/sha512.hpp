@@ -26,7 +26,7 @@ namespace SHA512 {
         #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 8) ~ (i << 3) */
-            ctx.m[i] = Utils::to64BE(ctx.buf + (i << 3));
+            ctx.m[i] = Utils::BE::to64(ctx.buf + (i << 3));
         };
 
         SHA512::Core::core(ctx.h, ctx.m);
@@ -75,7 +75,7 @@ namespace SHA512 {
         transform(ctx);
 
         for (size_t i = 0; i < 64; ++i) {
-            out[i] = Utils::from64BE(ctx.h, i);
+            out[i] = Utils::BE::from64(ctx.h, i);
         };
     };
 
