@@ -82,7 +82,7 @@ function SHA2() {
 
     /* message */
     const message = new Uint8Array([
-        0x61, 0x62, 0x63
+      0x61, 0x62, 0x63
     ]);
     const messageLen = message.length;
     const messagePtr = wasm._malloc(messageLen);
