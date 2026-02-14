@@ -126,9 +126,9 @@ function SHA2() {
     const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
 
     console.log(
-        Array.from(result as Uint8Array)
-            .map((b) => b.toString(16).padStart(2, "0"))
-            .join("")
+      Array.from(result as Uint8Array)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
     );
 
     /* ===== CLEANUP ===== */
