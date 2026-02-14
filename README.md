@@ -70,61 +70,6 @@ mkdir wasm ; emcc ./src/lib/sha2.wasm.cpp \
   -o wasm/sha2.web.js
 ```
 
-Web JS/TS API call example:
-
-```JS
-import createModule from './lib/sha2.web';
-
-
-function SHA2() {
-    (async () => {
-        const wasm = await createModule();
-
-        /* ===== INPUT ===== */
-        const data = new Uint8Array([
-            0x61, 0x62, 0x63
-        ]);
-
-        const inLen = data.length;
-
-        /** allocating memory */
-        const inPtr = wasm._malloc(inLen);
-
-        /** copy to WASM memo */
-        wasm.HEAPU8.set(data, inPtr);
-
-        /* ===== OUTPUT ===== */
-        const outLen = 64;
-        const outPtr = wasm._malloc(outLen);
-
-        /* ===== SHA512 ===== */
-        const ctx = wasm._sha512_create();
-
-        wasm._sha512_update(ctx, inPtr, inLen);
-        wasm._sha512_digest(ctx, outPtr);
-
-        /* ===== RESULT ===== */
-        const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
-
-        console.log(
-            Array.from(result as Uint8Array)
-                .map((b) => b.toString(16).padStart(2, "0"))
-                .join("")
-        );
-
-        /* ===== CLEANUP ===== */
-        wasm._free(inPtr);
-        wasm._free(outPtr);
-        wasm._sha512_destroy(ctx);
-
-    })();
-
-    return null;
-};
-
-export default SHA2;
-```
-
 ### Build for React Native:
 
 ```bash
@@ -142,4 +87,58 @@ mkdir wasm ; emcc ./src/chacha.wasm.cpp \
   ]' \
   -Wl,--no-entry \
   -o wasm/chacha.rn.wasm
+```
+
+### Web JS/TS API call example:
+
+```JS
+import createModule from './lib/sha2.web';
+
+
+function SHA2() {
+  (async () => {
+    const wasm = await createModule();
+
+    /* ===== INPUT ===== */
+    const data = new Uint8Array([
+        0x61, 0x62, 0x63
+    ]);
+
+    const inLen = data.length;
+
+    /** allocating memory */
+    const inPtr = wasm._malloc(inLen);
+
+    /** copy to WASM memo */
+    wasm.HEAPU8.set(data, inPtr);
+
+    /* ===== OUTPUT ===== */
+    const outLen = 64;
+    const outPtr = wasm._malloc(outLen);
+
+    /* ===== SHA512 ===== */
+    const ctx = wasm._sha512_create();
+
+    wasm._sha512_update(ctx, inPtr, inLen);
+    wasm._sha512_digest(ctx, outPtr);
+
+    /* ===== RESULT ===== */
+    const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
+
+    console.log(
+        Array.from(result as Uint8Array)
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("")
+    );
+
+    /* ===== CLEANUP ===== */
+    wasm._free(inPtr);
+    wasm._free(outPtr);
+    wasm._sha512_destroy(ctx);
+  })();
+
+  return null;
+};
+
+export default SHA2;
 ```
