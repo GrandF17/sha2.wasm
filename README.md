@@ -70,25 +70,6 @@ mkdir wasm ; emcc ./src/lib/sha2.wasm.cpp \
   -o wasm/sha2.web.js
 ```
 
-### Build for React Native:
-
-```bash
-mkdir wasm ; emcc ./src/chacha.wasm.cpp \
-  -O3 \
-  -std=c++17 \
-  -s STANDALONE_WASM=1 \
-  -s EXPORTED_FUNCTIONS='[
-    "_chacha20_create",
-    "_chacha20_encrypt",
-    "_chacha20_destroy",
-    "_xchacha20_create",
-    "_xchacha20_encrypt",
-    "_xchacha20_destroy"
-  ]' \
-  -Wl,--no-entry \
-  -o wasm/chacha.rn.wasm
-```
-
 ### Web JS/TS API call example:
 
 ```JS
