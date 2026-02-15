@@ -52,7 +52,7 @@ TEST(SHA224, RFC6234) {
 
         std::vector<uint8_t> out(expected.size());
 
-        SHA256::CTX ctx;
+        SHA224::CTX ctx;
         SHA224::init(ctx);
         SHA224::update(ctx, message.data(), message.size());
         SHA224::digest(ctx, out.data());

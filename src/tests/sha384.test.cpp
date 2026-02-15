@@ -59,7 +59,7 @@ TEST(SHA384, RFC6234) {
 
         std::vector<uint8_t> out(expected.size());
 
-        SHA512::CTX ctx;
+        SHA384::CTX ctx;
         SHA384::init(ctx);
         SHA384::update(ctx, message.data(), message.size());
         SHA384::digest(ctx, out.data());
