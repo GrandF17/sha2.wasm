@@ -16,6 +16,7 @@ namespace SHA224 {
         memcpy(ctx.h, SHA2::CONST::IV224, 32);
         ctx.bitlen = 0;
         ctx.buf_len = 0;
+        ctx.finalized = false;
     };
 
     inline void update(

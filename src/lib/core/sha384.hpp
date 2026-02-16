@@ -16,6 +16,7 @@ namespace SHA384 {
         memcpy(ctx.h, SHA2::CONST::IV384, sizeof(ctx.h));
         ctx.bitlen = 0;
         ctx.buf_len = 0;
+        ctx.finalized = false;
     };
 
     inline void update(

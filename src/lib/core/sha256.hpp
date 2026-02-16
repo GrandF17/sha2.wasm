@@ -12,13 +12,14 @@
 
 
 namespace SHA256 {
-    /** 176 bytes of CTX */
+    /** 177 bytes of CTX */
     struct CTX {
         uint32_t h[8];
         uint8_t  buf[64];
         uint32_t m[16];
         uint64_t bitlen;
         size_t   buf_len;
+        bool     finalized;
     };
 
     /** safe transform to Big-Endian words and running core after */
@@ -33,6 +34,11 @@ namespace SHA256 {
     };
 
     inline void update(CTX &ctx, const uint8_t *message, size_t len) {
+        /** verify if NOT finalized */
+        if (ctx.finalized) {
+            throw std::runtime_error("already finalized");
+        };
+
         ctx.bitlen += len * 8;
 
         while (len > 0) {
@@ -51,6 +57,11 @@ namespace SHA256 {
     };
 
     inline void digest(CTX &ctx, uint8_t *out) {
+        /** verify if NOT finalized */
+        if (ctx.finalized) {
+            throw std::runtime_error("already finalized");
+        };
+
         ctx.buf[ctx.buf_len++] = 0x80;
 
         if (ctx.buf_len > 56) {
@@ -77,12 +88,15 @@ namespace SHA256 {
         for (size_t i = 0; i < 32; ++i) {
             out[i] = Utils::BE::from32(ctx.h, i);
         };
+
+        ctx.finalized = true;
     };
 
     inline void init(CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV256, sizeof(ctx.h));
         ctx.bitlen = 0;
         ctx.buf_len = 0;
+        ctx.finalized = false;
     };
 
     inline void destroy(CTX &ctx) {
