@@ -13,7 +13,7 @@ namespace SHA224 {
     using CTX = SHA256::CTX;
 
     inline void init(CTX &ctx) {
-        memcpy(ctx.h, SHA2::CONST::IV224, 32);
+        memcpy(ctx.h, SHA2::CONST::IV224, sizeof(ctx.h));
         ctx.bitlen = 0;
         ctx.buf_len = 0;
         ctx.finalized = false;

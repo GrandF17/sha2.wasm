@@ -51,20 +51,78 @@ TEST(SHA384, RFC6234) {
             "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
             "ebfa03761b1767db89a23a176bc006bee6aed0371096b89d1fdcadfd4b222c4331e4a848d10c8bfd002553010189305e",
         },
+        /** ASCII "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq" */
+        {
+            "6162636462636465636465666465666765666768666768696768696a68696a6b696a6b6c6a6b6c6d6b6c6d6e6c6d6e6f6d6e6f706e6f7071",
+            "3391fdddfc8dc7393707a65b1b4709397cf8b1d162af05abfe8f450de5f36bc6b0455a8520bc4e6f5fe95b1fe3c8452b",
+        },
+        /** ASCII "The quick brown fox jumps over the lazy dog" */
+        {
+            "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f67",
+            "ca737f1014a48f4c0b6dd43cb177b0afd9e5169367544c494011e3317dbf9a509cb1e5dc1e85a941bbee3d7f2afbc9b1",
+        },
+        /** ASCII "The quick brown fox jumps over the lazy dog." */
+        {
+            "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f672e",
+            "ed892481d8272ca6df370bf706e4d7bc1b5739fa2177aae6c50e946678718fc67a7af2819a021c2fc34e91bdb63409d7",
+        },
+        /** boundary: single zero byte */
+        {
+            "00",
+            "bec021b4f368e3069134e012c2b4307083d3a9bdd206e24e5f0d86e13d6636655933ec2b413465966817a9c208a11717",
+        },
+        /** boundary: 120 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff0011223344556677",
+            "f1c1edcd6624bd1e6285f03e9adcfcb91de55f707080e51380ddd2bb53ff05d3e5574470867f3ec2290773910ca13537",
+        },
+        /** boundary: 127 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff001122334455667788990102030405",
+            "f155ea8b3eeb6c92c98f096bb6d6572b49c29c2f223cc4e3ddc499c594089cd605e76cec749c85ef962b835297d7b6aa",
+        },
+        /** boundary: 128 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506",
+            "34d3872b6d3ac85ac15e635a8cd94b6d96122191cef41bfd3e1e585fa775b84c94bdfbe8101176bd550f434cb1cd78f2",
+        },
     };
 
     for (const auto &tv : tvs) {
         auto message  = hex(tv.message);
         auto expected = hex(tv.hash);
 
-        std::vector<uint8_t> out(expected.size());
+        std::vector<uint8_t> out_single(expected.size());
+        std::vector<uint8_t> out_split(expected.size());
 
-        SHA384::CTX ctx;
-        SHA384::init(ctx);
-        SHA384::update(ctx, message.data(), message.size());
-        SHA384::digest(ctx, out.data());
-        SHA384::destroy(ctx);
+        /** single-shot */
+        {
+            SHA384::CTX ctx;
+            SHA384::init(ctx);
+            SHA384::update(ctx, message.data(), message.size());
+            SHA384::digest(ctx, out_single.data());
+            SHA384::destroy(ctx);
+        }
 
-        EXPECT_EQ(out, expected);
+        /** two-shots */
+        {
+            SHA384::CTX ctx;
+            SHA384::init(ctx);
+
+            size_t half = message.size() / 2;
+
+            SHA384::update(ctx, message.data(), half);
+            SHA384::update(ctx, message.data() + half, message.size() - half);
+
+            SHA384::digest(ctx, out_split.data());
+            SHA384::destroy(ctx);
+        }
+
+        EXPECT_EQ(out_single, expected);
+        EXPECT_EQ(out_split, expected);
+        EXPECT_EQ(out_single, out_split);
     };
 };

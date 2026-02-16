@@ -51,20 +51,78 @@ TEST(SHA512, RFC6234) {
             "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
             "8bab5dd8b15e849f54f16f9309f260524436190b926f4343c340401c3acbb68b584782361dba5c5ac15909ace5a69db50ab6c9efb5f08f7faa8d8aad891ed307",
         },
+        /** ASCII "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq" */
+        {
+            "6162636462636465636465666465666765666768666768696768696a68696a6b696a6b6c6a6b6c6d6b6c6d6e6c6d6e6f6d6e6f706e6f7071",
+            "204a8fc6dda82f0a0ced7beb8e08a41657c16ef468b228a8279be331a703c33596fd15c13b1b07f9aa1d3bea57789ca031ad85c7a71dd70354ec631238ca3445",
+        },
+        /** ASCII "The quick brown fox jumps over the lazy dog" */
+        {
+            "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f67",
+            "07e547d9586f6a73f73fbac0435ed76951218fb7d0c8d788a309d785436bbb642e93a252a954f23912547d1e8a3b5ed6e1bfd7097821233fa0538f3db854fee6",
+        },
+        /** ASCII "The quick brown fox jumps over the lazy dog." */
+        {
+            "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f672e",
+            "91ea1245f20d46ae9a037a989f54f1f790f0a47607eeb8a14d12890cea77a1bbc6c7ed9cf205e67b7f2b8fd4c7dfd3a7a8617e45f3c463d481c7e586c39ac1ed",
+        },
+        /** boundary: single zero byte */
+        {
+            "00",
+            "b8244d028981d693af7b456af8efa4cad63d282e19ff14942c246e50d9351d22704a802a71c3580b6370de4ceb293c324a8423342557d4e5c38438f0e36910ee",
+        },
+        /** boundary: 120 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff0011223344556677",
+            "8c1c048876fd2b36f6f9c44d773fa8e22a5b3c44450ca0fe728c533f1a7248c7ce60d359f532e092dac5aa616281e32287be1393b2c72fa038c37a65b5af8d9f",
+        },
+        /** boundary: 127 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff001122334455667788990102030405",
+            "c6f3fd2b3d0c04f0eb7200936c75b43b78ac142a28ce50731620c26451c3ea9a78384d39114919e1ce402debc16d9505cd35910368c7c1efee9c264e0564d4aa",
+        },
+        /** boundary: 128 bytes */
+        {
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506"
+            "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899010203040506",
+            "374c1be3139293b51266e3141cdb2e39ff6cc901f4bf1cd4d79fdb5703d29d67dfb2a27aea9a36daabab90e1750a5f2e4516f83cb1bc9c8785054b09b25d89ff",
+        },
     };
 
     for (const auto &tv : tvs) {
         auto message  = hex(tv.message);
         auto expected = hex(tv.hash);
 
-        std::vector<uint8_t> out(expected.size());
+        std::vector<uint8_t> out_single(expected.size());
+        std::vector<uint8_t> out_split(expected.size());
 
-        SHA512::CTX ctx;
-        SHA512::init(ctx);
-        SHA512::update(ctx, message.data(), message.size());
-        SHA512::digest(ctx, out.data());
-        SHA512::destroy(ctx);
+        /** single-shot */
+        {
+            SHA512::CTX ctx;
+            SHA512::init(ctx);
+            SHA512::update(ctx, message.data(), message.size());
+            SHA512::digest(ctx, out_single.data());
+            SHA512::destroy(ctx);
+        }
 
-        EXPECT_EQ(out, expected);
+        /** two-shots */
+        {
+            SHA512::CTX ctx;
+            SHA512::init(ctx);
+
+            size_t half = message.size() / 2;
+
+            SHA512::update(ctx, message.data(), half);
+            SHA512::update(ctx, message.data() + half, message.size() - half);
+
+            SHA512::digest(ctx, out_split.data());
+            SHA512::destroy(ctx);
+        }
+
+        EXPECT_EQ(out_single, expected);
+        EXPECT_EQ(out_split, expected);
+        EXPECT_EQ(out_single, out_split);
     };
 };
