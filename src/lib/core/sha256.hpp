@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <stdexcept>
 
 #include "sha256.core.hpp"
 
