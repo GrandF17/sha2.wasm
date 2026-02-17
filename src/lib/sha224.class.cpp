@@ -2,7 +2,7 @@
 #define SHA224_CLASS_CPP
 
 
-#include "sha224.hpp"
+#include "core/sha224.hpp"
 
 
 class SHA224_HASH {
@@ -22,7 +22,7 @@ public:
         SHA224::update(ctx, message, len);
     };
 
-    inline void digest(uint8_t (&out)[digest_size]) {
+    inline void digest(uint8_t *out) {
         SHA224::digest(ctx, out);
     };
 

@@ -27,7 +27,7 @@ namespace SHA384 {
         SHA512::update(ctx, message, len);
     };
 
-    inline void digest(CTX &ctx, uint8_t out[48]) {
+    inline void digest(CTX &ctx, uint8_t *out) {
         uint8_t tmp[64];
         SHA512::digest(ctx, tmp);
         memcpy(out, tmp, 48 * sizeof(uint8_t));

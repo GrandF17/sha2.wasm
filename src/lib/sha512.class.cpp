@@ -2,7 +2,7 @@
 #define SHA256_CLASS_CPP
 
 
-#include "sha512.hpp"
+#include "core/sha512.hpp"
 
 
 class SHA512_HASH {
@@ -22,7 +22,7 @@ public:
         SHA512::update(ctx, message, len);
     };
 
-    inline void digest(uint8_t (&out)[digest_size]) {
+    inline void digest(uint8_t *out) {
         SHA512::digest(ctx, out);
     };
 

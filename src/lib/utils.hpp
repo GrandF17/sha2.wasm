@@ -6,6 +6,22 @@
 
 
 namespace Utils {
+    /** portable clean function */
+    namespace Clean {
+        inline void secure_zero(void* ptr, size_t len) {
+            volatile unsigned char* p =
+                reinterpret_cast<volatile unsigned char*>(ptr);
+
+            while (len--) {
+                *p++ = 0;
+            };
+
+            #if defined(__GNUC__) || defined(__clang__)
+                __asm__ __volatile__("" : : "r"(ptr) : "memory");
+            #endif
+        };
+    };
+
     /** Big-Endian parser/formatter */
     namespace BE {
         inline uint64_t to64(const uint8_t* p) {

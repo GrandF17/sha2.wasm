@@ -27,7 +27,7 @@ namespace SHA224 {
         SHA256::update(ctx, message, len);
     };
 
-    inline void digest(CTX &ctx, uint8_t out[28]) {
+    inline void digest(CTX &ctx, uint8_t *out) {
         uint8_t tmp[32];
         SHA256::digest(ctx, tmp);
         memcpy(out, tmp, 28 * sizeof(uint8_t));

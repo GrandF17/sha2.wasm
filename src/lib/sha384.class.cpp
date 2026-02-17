@@ -2,7 +2,7 @@
 #define SHA256_CLASS_CPP
 
 
-#include "sha384.hpp"
+#include "core/sha384.hpp"
 
 
 class SHA384_HASH {
@@ -22,7 +22,7 @@ public:
         SHA384::update(ctx, message, len);
     };
 
-    inline void digest(uint8_t (&out)[digest_size]) {
+    inline void digest(uint8_t *out) {
         SHA384::digest(ctx, out);
     };
 
