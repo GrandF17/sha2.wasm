@@ -29,7 +29,7 @@ public:
     inline void destroy() {
         SHA256::destroy(ctx);
     };
-};  // class SHA256
+};  // class SHA256_HASH
 
 
 #endif  // SHA256_CLASS_CPP

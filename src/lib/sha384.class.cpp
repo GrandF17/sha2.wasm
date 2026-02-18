@@ -29,7 +29,7 @@ public:
     inline void destroy() {
         SHA384::destroy(ctx);
     };
-};  // class SHA384
+};  // class SHA384_HASH
 
 
 #endif  // SHA384_CLASS_CPP

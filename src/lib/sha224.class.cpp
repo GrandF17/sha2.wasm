@@ -29,7 +29,7 @@ public:
     inline void destroy() {
         SHA224::destroy(ctx);
     };
-};  // class SHA224
+};  // class SHA224_HASH
 
 
 #endif  // SHA224_CLASS_CPP

@@ -29,7 +29,7 @@ public:
     inline void destroy() {
         SHA512::destroy(ctx);
     };
-};  // class SHA512
+};  // class SHA512_HASH
 
 
 #endif  // SHA512_CLASS_CPP
