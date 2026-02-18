@@ -108,6 +108,7 @@ function SHA2() {
     );
 
     /** cleanup */
+    wasm._free(keyPtr);
     wasm._free(messagePtr);
     wasm._free(outPtr);
   })();
