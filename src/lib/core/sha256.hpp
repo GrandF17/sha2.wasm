@@ -7,8 +7,8 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "../const.hpp"
-#include "../utils.hpp"
+#include "const.hpp"
+#include "utils.hpp"
 
 
 namespace SHA256 {

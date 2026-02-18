@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/core/sha256.hpp"
+#include "../lib/sha256.class.cpp"
 
 
 struct SHA256TV {
@@ -87,28 +87,27 @@ TEST(SHA256, RFC6234) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
+        SHA256_HASH H;
 
         /** single-shot */
         {
-            SHA256::CTX ctx;
-            SHA256::init(ctx);
-            SHA256::update(ctx, message.data(), message.size());
-            SHA256::digest(ctx, out_single.data());
-            SHA256::destroy(ctx);
+            H.init();
+            H.update(message.data(), message.size());
+            H.digest(out_single.data());
+            H.destroy();
         }
 
         /** two-shots */
         {
-            SHA256::CTX ctx;
-            SHA256::init(ctx);
+            H.init();
 
             size_t half = message.size() / 2;
 
-            SHA256::update(ctx, message.data(), half);
-            SHA256::update(ctx, message.data() + half, message.size() - half);
+            H.update(message.data(), half);
+            H.update(message.data() + half, message.size() - half);
 
-            SHA256::digest(ctx, out_split.data());
-            SHA256::destroy(ctx);
+            H.digest(out_split.data());
+            H.destroy();
         }
 
         EXPECT_EQ(out_single, expected);

@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "core/utils.hpp"
+
 
 template<class Hash> 
 class HMAC {
@@ -31,18 +33,18 @@ public:
     /** digest result size according to Hash class */
     static constexpr size_t digest_size = Hash::digest_size;
 
-    void init(const uint8_t* key, size_t key_len) {
+    void init(const uint8_t *key, size_t len) {
         uint8_t secret[block_size] = {0};
 
-        if (key_len > block_size) {
+        if (len > block_size) {
             /** if secret size > block size */
             H.init();
-            H.update(key, key_len);
+            H.update(key, len);
             H.digest(secret);
             H.destroy();
         } else {
             /** if secret size <= block size */
-            memcpy(secret, key, key_len);
+            memcpy(secret, key, len);
         };
         
         /** create ikey + okey */

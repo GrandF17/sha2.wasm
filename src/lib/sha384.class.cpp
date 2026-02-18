@@ -1,5 +1,5 @@
-#ifndef SHA256_CLASS_CPP
-#define SHA256_CLASS_CPP
+#ifndef SHA384_CLASS_CPP
+#define SHA384_CLASS_CPP
 
 
 #include "core/sha384.hpp"

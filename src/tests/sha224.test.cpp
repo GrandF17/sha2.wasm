@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/core/sha224.hpp"
+#include "../lib/sha224.class.cpp"
 
 
 struct SHA224TV {
@@ -89,28 +89,27 @@ TEST(SHA224, RFC6234) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
+        SHA224_HASH H;
 
         /** single-shot */
         {
-            SHA224::CTX ctx;
-            SHA224::init(ctx);
-            SHA224::update(ctx, message.data(), message.size());
-            SHA224::digest(ctx, out_single.data());
-            SHA224::destroy(ctx);
+            H.init();
+            H.update(message.data(), message.size());
+            H.digest(out_single.data());
+            H.destroy();
         }
 
         /** two-shots */
         {
-            SHA224::CTX ctx;
-            SHA224::init(ctx);
+            H.init();
 
             size_t half = message.size() / 2;
 
-            SHA224::update(ctx, message.data(), half);
-            SHA224::update(ctx, message.data() + half, message.size() - half);
+            H.update(message.data(), half);
+            H.update(message.data() + half, message.size() - half);
 
-            SHA224::digest(ctx, out_split.data());
-            SHA224::destroy(ctx);
+            H.digest(out_split.data());
+            H.destroy();
         }
 
         EXPECT_EQ(out_single, expected);

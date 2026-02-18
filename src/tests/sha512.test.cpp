@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/core/sha512.hpp"
+#include "../lib/sha512.class.cpp"
 
 
 struct SHA512TV {
@@ -97,28 +97,27 @@ TEST(SHA512, RFC6234) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
+        SHA512_HASH H;
 
         /** single-shot */
         {
-            SHA512::CTX ctx;
-            SHA512::init(ctx);
-            SHA512::update(ctx, message.data(), message.size());
-            SHA512::digest(ctx, out_single.data());
-            SHA512::destroy(ctx);
+            H.init();
+            H.update(message.data(), message.size());
+            H.digest(out_single.data());
+            H.destroy();
         }
 
         /** two-shots */
         {
-            SHA512::CTX ctx;
-            SHA512::init(ctx);
+            H.init();
 
             size_t half = message.size() / 2;
 
-            SHA512::update(ctx, message.data(), half);
-            SHA512::update(ctx, message.data() + half, message.size() - half);
+            H.update(message.data(), half);
+            H.update(message.data() + half, message.size() - half);
 
-            SHA512::digest(ctx, out_split.data());
-            SHA512::destroy(ctx);
+            H.digest(out_split.data());
+            H.destroy();
         }
 
         EXPECT_EQ(out_single, expected);

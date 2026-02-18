@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/core/sha384.hpp"
+#include "../lib/sha384.class.cpp"
 
 
 struct SHA384TV {
@@ -97,28 +97,27 @@ TEST(SHA384, RFC6234) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
+        SHA384_HASH H;
 
         /** single-shot */
         {
-            SHA384::CTX ctx;
-            SHA384::init(ctx);
-            SHA384::update(ctx, message.data(), message.size());
-            SHA384::digest(ctx, out_single.data());
-            SHA384::destroy(ctx);
+            H.init();
+            H.update(message.data(), message.size());
+            H.digest(out_single.data());
+            H.destroy();
         }
 
         /** two-shots */
         {
-            SHA384::CTX ctx;
-            SHA384::init(ctx);
+            H.init();
 
             size_t half = message.size() / 2;
 
-            SHA384::update(ctx, message.data(), half);
-            SHA384::update(ctx, message.data() + half, message.size() - half);
+            H.update(message.data(), half);
+            H.update(message.data() + half, message.size() - half);
 
-            SHA384::digest(ctx, out_split.data());
-            SHA384::destroy(ctx);
+            H.digest(out_split.data());
+            H.destroy();
         }
 
         EXPECT_EQ(out_single, expected);

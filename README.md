@@ -47,22 +47,14 @@ mkdir wasm ; emcc ./src/lib/sha2.wasm.cpp \
   -s WASM=1 \
   -s EXPORT_NAME=createSHA2Module \
   -s EXPORTED_FUNCTIONS='[
-    "_sha224_create",
-    "_sha224_update",
-    "_sha224_digest",
-    "_sha224_destroy",
-    "_sha256_create",
-    "_sha256_update",
-    "_sha256_digest",
-    "_sha256_destroy",
-    "_sha384_create",
-    "_sha384_update",
-    "_sha384_digest",
-    "_sha384_destroy",
-    "_sha512_create",
-    "_sha512_update",
-    "_sha512_digest",
-    "_sha512_destroy",
+    "_sha224",
+    "_sha256",
+    "_sha384",
+    "_sha512",
+    "_hmac_sha224",
+    "_hmac_sha256",
+    "_hmac_sha384",
+    "_hmac_sha512",
     "_malloc",
     "_free"
   ]' \

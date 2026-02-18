@@ -1,5 +1,5 @@
-#ifndef SHA256_CLASS_CPP
-#define SHA256_CLASS_CPP
+#ifndef SHA512_CLASS_CPP
+#define SHA512_CLASS_CPP
 
 
 #include "core/sha512.hpp"
