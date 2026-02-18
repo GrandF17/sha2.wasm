@@ -5,13 +5,13 @@
 #include "../lib/sha384.class.cpp"
 
 
-struct SHA384TV {
+struct TV {
     const char *message;
     const char *hash;
 };
 
-TEST(SHA384, RFC6234) {
-    const SHA384TV tvs[] = {
+TEST(SHA2, 384) {
+    const TV tvs[] = {
         {
             "",
             "38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b",

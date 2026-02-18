@@ -19,6 +19,10 @@ add_executable(sha2
     sha256.test.cpp
     sha384.test.cpp
     sha512.test.cpp
+    hmac_sha224.test.cpp
+    hmac_sha256.test.cpp
+    hmac_sha384.test.cpp
+    hmac_sha512.test.cpp
 )
 
 target_link_libraries(sha2

@@ -5,13 +5,13 @@
 #include "../lib/sha224.class.cpp"
 
 
-struct SHA224TV {
+struct TV {
     const char *message;
     const char *hash;
 };
 
-TEST(SHA224, RFC6234) {
-    const SHA224TV tvs[] = {
+TEST(SHA2, 224) {
+    const TV tvs[] = {
         /** empty string */
         {
             "",

@@ -5,13 +5,13 @@
 #include "../lib/sha256.class.cpp"
 
 
-struct SHA256TV {
+struct TV {
     const char *message;
     const char *hash;
 };
 
-TEST(SHA256, RFC6234) {
-    const SHA256TV tvs[] = {
+TEST(SHA2, 256) {
+    const TV tvs[] = {
         {
             "",
             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
