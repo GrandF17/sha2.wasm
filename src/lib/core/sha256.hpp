@@ -98,6 +98,8 @@ namespace SHA256 {
         memcpy(w, m, 16 * sizeof(uint32_t));
 
         /** extend + compress (64 rounds) */
+        #pragma omp simd
+        #pragma unroll
         for (size_t i = 0; i < 64; ++i) {
             /** 1) extend */
             if(i >= 16) {
@@ -150,6 +152,8 @@ namespace SHA256 {
 
     /** safe transform to Big-Endian words and running core after */
     inline void transform(CTX &ctx) {
+        #pragma omp simd
+        #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 4) ~ (i << 2) */
             ctx.m[i] = Utils::BE::to32(ctx.buf + (i << 2));

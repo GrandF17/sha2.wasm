@@ -98,6 +98,8 @@ namespace SHA512 {
         memcpy(w, m, 16 * sizeof(uint64_t));
 
         /** extend + compress (80 rounds) */
+        #pragma omp simd
+        #pragma unroll
         for (size_t i = 0; i < 80; ++i) {
             /** 1) extend */
             if(i >= 16) {
@@ -150,6 +152,8 @@ namespace SHA512 {
 
     /** safe transform to Big-Endian words and running core after */
     inline void transform(CTX &ctx) {
+        #pragma omp simd
+        #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 8) ~ (i << 3) */
             ctx.m[i] = Utils::BE::to64(ctx.buf + (i << 3));
