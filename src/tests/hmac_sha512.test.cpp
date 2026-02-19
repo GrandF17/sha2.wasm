@@ -58,7 +58,7 @@ TEST(HMAC, SHA512) {
             "8b40e78ef4022c4b241abc8b1794f2c0e5d9870220d2c0b21ea721c7d6b316a316c152f0aad49ac2181adbb841c3de4b61a6237e9d850d82f044ee84a2c6182b"
             "b6",
             "616263",
-            "",
+            "9c0d36c6617b89aeab6a9ba23732a1e28ff0e0a8808042fd2db6862534092e7e1f7be04a2364b7b751eff60fd3e0f3f536539e9f17d659287ff8d2a2a956deff",
         },
         /** ASCII "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq" (long key) */
         {
@@ -66,7 +66,7 @@ TEST(HMAC, SHA512) {
             "8b40e78ef4022c4b241abc8b1794f2c0e5d9870220d2c0b21ea721c7d6b316a316c152f0aad49ac2181adbb841c3de4b61a6237e9d850d82f044ee84a2c6182b"
             "b6",
             "6162636462636465636465666465666765666768666768696768696a68696a6b696a6b6c6a6b6c6d6b6c6d6e6c6d6e6f6d6e6f706e6f7071",
-            "9c0d36c6617b89aeab6a9ba23732a1e28ff0e0a8808042fd2db6862534092e7e1f7be04a2364b7b751eff60fd3e0f3f536539e9f17d659287ff8d2a2a956deff",
+            "e7307aa6e9706b17611262df5ae9ad6c3b07a7e770d993420b560e8abe3d5845cf1e97d14c106d86d9c792794db0236e1a29c75e10e156fdd745a6d6d0aba1df",
         },
         /** ASCII "The quick brown fox jumps over the lazy dog" (long key) */
         {
