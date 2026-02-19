@@ -150,7 +150,6 @@ namespace SHA512 {
 
     /** safe transform to Big-Endian words and running core after */
     inline void transform(CTX &ctx) {
-        #pragma unroll
         for (size_t i = 0; i < 16; ++i) {
             /** (i * 8) ~ (i << 3) */
             ctx.m[i] = Utils::BE::to64(ctx.buf + (i << 3));
