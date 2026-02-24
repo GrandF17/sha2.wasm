@@ -8,7 +8,7 @@
 #include "core/utils.hpp"
 
 
-template<class Hash> 
+template<class Hash>
 class HMAC {
 private:
     /** hash-function */

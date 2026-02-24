@@ -106,7 +106,7 @@ namespace SHA2_512 {
         #pragma unroll
         for (size_t i = 0; i < 80; ++i) {
             /** 1) extend */
-            if(i >= 16) {
+            if (i >= 16) {
                 w[i] = (
                     s0(w[i - 15]) +
                     s1(w[i -  2]) +
