@@ -36,14 +36,16 @@ public:
     void init(const uint8_t *key, size_t len) {
         uint8_t secret[block_size] = {0};
 
+        /** if secret size > block size */
         if (len > block_size) {
-            /** if secret size > block size */
             H.init();
             H.update(key, len);
             H.digest(secret);
             H.destroy();
-        } else {
-            /** if secret size <= block size */
+        };
+        
+        /** if secret size <= block size */
+        if (len <= block_size) {
             memcpy(secret, key, len);
         };
         
