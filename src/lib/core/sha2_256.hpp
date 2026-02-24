@@ -1,5 +1,5 @@
-#ifndef SHA256_HPP
-#define SHA256_HPP
+#ifndef SHA2_256_HPP
+#define SHA2_256_HPP
 
 
 #include <cstdint>
@@ -11,7 +11,7 @@
 #include "utils.hpp"
 
 
-namespace SHA256 {
+namespace SHA2_256 {
   ////////////////////////////////////////////////////////////////
  ///////////////////////// PRIVATE BLOCK ////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -92,6 +92,10 @@ namespace SHA256 {
         uint32_t F = h[5];
         uint32_t G = h[6];
         uint32_t H = h[7];
+
+        /** copy of K256 for SHA2-256 */
+        uint32_t k[64] = {0};
+        memcpy(k, SHA2::CONST::K256, 64 * sizeof(uint32_t));
         
         /** extend the first 16 words to 64 */
         uint32_t w[64] = {0};
@@ -105,14 +109,14 @@ namespace SHA256 {
             if(i >= 16) {
                 w[i] = (
                     s0(w[i - 15]) +
-                    s1(w[i - 2]) +
-                    w[i - 7] +
-                    w[i - 16]
+                    s1(w[i -  2]) +
+                       w[i -  7]  +
+                       w[i - 16]
                 );
             };
 
             /** 2) compress */
-            uint32_t T1 = (H + S1(E) + ch(E, F, G) + SHA2::CONST::K256[i] + w[i]);
+            uint32_t T1 = (H + S1(E) + ch(E, F, G) + k[i] + w[i]);
             uint32_t T2 = (S0(A) + maj(A, B, C));
 
             H = G;
@@ -145,7 +149,7 @@ namespace SHA256 {
         uint32_t h[8];
         uint8_t  buf[64];
         uint32_t m[16];
-        uint64_t bitlen;
+        uint64_t bit_len;
         size_t   buf_len;
         bool     finalized;
     };
@@ -159,7 +163,7 @@ namespace SHA256 {
             ctx.m[i] = Utils::BE::to32(ctx.buf + (i << 2));
         };
 
-        SHA256::core(ctx.h, ctx.m);
+        SHA2_256::core(ctx.h, ctx.m);
     };
 
     inline void update(CTX &ctx, const uint8_t *message, size_t len) {
@@ -168,7 +172,7 @@ namespace SHA256 {
             throw std::runtime_error("already finalized");
         };
 
-        ctx.bitlen += len * 8;
+        ctx.bit_len += len * 8;
 
         while (len > 0) {
             size_t take = std::min(len, 64 - ctx.buf_len);
@@ -202,15 +206,15 @@ namespace SHA256 {
         memset(ctx.buf + ctx.buf_len, 0, 56 - ctx.buf_len);
         ctx.buf_len = 56;
 
-        uint64_t bitlen = ctx.bitlen;
-        ctx.buf[56] = (uint8_t)(bitlen >> 56);
-        ctx.buf[57] = (uint8_t)(bitlen >> 48);
-        ctx.buf[58] = (uint8_t)(bitlen >> 40);
-        ctx.buf[59] = (uint8_t)(bitlen >> 32);
-        ctx.buf[60] = (uint8_t)(bitlen >> 24);
-        ctx.buf[61] = (uint8_t)(bitlen >> 16);
-        ctx.buf[62] = (uint8_t)(bitlen >>  8);
-        ctx.buf[63] = (uint8_t)(bitlen      );
+        uint64_t bit_len = ctx.bit_len;
+        ctx.buf[56] = (uint8_t)(bit_len >> 56);
+        ctx.buf[57] = (uint8_t)(bit_len >> 48);
+        ctx.buf[58] = (uint8_t)(bit_len >> 40);
+        ctx.buf[59] = (uint8_t)(bit_len >> 32);
+        ctx.buf[60] = (uint8_t)(bit_len >> 24);
+        ctx.buf[61] = (uint8_t)(bit_len >> 16);
+        ctx.buf[62] = (uint8_t)(bit_len >>  8);
+        ctx.buf[63] = (uint8_t)(bit_len      );
 
         transform(ctx);
 
@@ -223,7 +227,7 @@ namespace SHA256 {
 
     inline void init(CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV256, sizeof(ctx.h));
-        ctx.bitlen = 0;
+        ctx.bit_len = 0;
         ctx.buf_len = 0;
         ctx.finalized = false;
     };
@@ -232,7 +236,7 @@ namespace SHA256 {
         /** secure zeroization of CTX */
         Utils::Clean::secure_zero(&ctx, sizeof(ctx));
     };
-};  // namespace SHA256
+};  // namespace SHA2_256
 
 
-#endif  // SHA256_HPP
+#endif  // SHA2_256_HPP

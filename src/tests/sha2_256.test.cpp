@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/sha256.class.cpp"
+#include "../lib/sha2_256.class.cpp"
 
 
 struct TV {
@@ -87,7 +87,7 @@ TEST(SHA2, 256) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
-        SHA256_HASH H;
+        SHA2_256_HASH H;
 
         /** single-shot */
         {

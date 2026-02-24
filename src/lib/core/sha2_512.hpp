@@ -1,5 +1,5 @@
-#ifndef SHA512_HPP
-#define SHA512_HPP
+#ifndef SHA2_512_HPP
+#define SHA2_512_HPP
 
 
 #include <cstdint>
@@ -11,7 +11,7 @@
 #include "utils.hpp"
 
 
-namespace SHA512 {
+namespace SHA2_512 {
   ////////////////////////////////////////////////////////////////
  ///////////////////////// PRIVATE BLOCK ////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -93,6 +93,10 @@ namespace SHA512 {
         uint64_t G = h[6];
         uint64_t H = h[7];
         
+        /** copy of K512 for SHA2-512 */
+        uint64_t k[80] = {0};
+        memcpy(k, SHA2::CONST::K512, 80 * sizeof(uint64_t));
+
         /** extend the first 16 words to 80 */
         uint64_t w[80] = {0};
         memcpy(w, m, 16 * sizeof(uint64_t));
@@ -105,14 +109,14 @@ namespace SHA512 {
             if(i >= 16) {
                 w[i] = (
                     s0(w[i - 15]) +
-                    s1(w[i - 2]) +
-                    w[i - 7] +
-                    w[i - 16]
+                    s1(w[i -  2]) +
+                       w[i -  7]  +
+                       w[i - 16]
                 );
             };
 
             /** 2) compress */
-            uint64_t T1 = (H + S1(E) + ch(E, F, G) + SHA2::CONST::K512[i] + w[i]);
+            uint64_t T1 = (H + S1(E) + ch(E, F, G) + k[i] + w[i]);
             uint64_t T2 = (S0(A) + maj(A, B, C));
 
             H = G;
@@ -145,7 +149,7 @@ namespace SHA512 {
         uint64_t h[8];
         uint8_t  buf[128];
         uint64_t m[16];
-        uint64_t bitlen;
+        uint64_t bit_len;
         size_t   buf_len;
         bool     finalized;
     };
@@ -159,7 +163,7 @@ namespace SHA512 {
             ctx.m[i] = Utils::BE::to64(ctx.buf + (i << 3));
         };
 
-        SHA512::core(ctx.h, ctx.m);
+        SHA2_512::core(ctx.h, ctx.m);
     };
 
     inline void update(CTX &ctx, const uint8_t *message, size_t len) {
@@ -168,7 +172,7 @@ namespace SHA512 {
             throw std::runtime_error("already finalized");
         };
 
-        ctx.bitlen += len * 8;
+        ctx.bit_len += len * 8;
 
         while (len > 0) {
             size_t take = std::min(len, 128 - ctx.buf_len);
@@ -202,15 +206,15 @@ namespace SHA512 {
         memset(ctx.buf + ctx.buf_len, 0, 120 - ctx.buf_len);
         ctx.buf_len = 120;
 
-        uint64_t bitlen = ctx.bitlen;
-        ctx.buf[120] = (uint8_t)(bitlen >> 56);
-        ctx.buf[121] = (uint8_t)(bitlen >> 48);
-        ctx.buf[122] = (uint8_t)(bitlen >> 40);
-        ctx.buf[123] = (uint8_t)(bitlen >> 32);
-        ctx.buf[124] = (uint8_t)(bitlen >> 24);
-        ctx.buf[125] = (uint8_t)(bitlen >> 16);
-        ctx.buf[126] = (uint8_t)(bitlen >>  8);
-        ctx.buf[127] = (uint8_t)(bitlen      );
+        uint64_t bit_len = ctx.bit_len;
+        ctx.buf[120] = (uint8_t)(bit_len >> 56);
+        ctx.buf[121] = (uint8_t)(bit_len >> 48);
+        ctx.buf[122] = (uint8_t)(bit_len >> 40);
+        ctx.buf[123] = (uint8_t)(bit_len >> 32);
+        ctx.buf[124] = (uint8_t)(bit_len >> 24);
+        ctx.buf[125] = (uint8_t)(bit_len >> 16);
+        ctx.buf[126] = (uint8_t)(bit_len >>  8);
+        ctx.buf[127] = (uint8_t)(bit_len      );
 
         transform(ctx);
 
@@ -223,7 +227,7 @@ namespace SHA512 {
 
     inline void init(CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV512, sizeof(ctx.h));
-        ctx.bitlen = 0;
+        ctx.bit_len = 0;
         ctx.buf_len = 0;
         ctx.finalized = false;
     };
@@ -232,7 +236,7 @@ namespace SHA512 {
         /** secure zeroization of CTX */
         Utils::Clean::secure_zero(&ctx, sizeof(ctx));
     };
-};  // namespace SHA512
+};  // namespace SHA2_512
 
 
-#endif  // SHA512_HPP
+#endif  // SHA2_512_HPP

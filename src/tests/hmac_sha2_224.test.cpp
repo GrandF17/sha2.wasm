@@ -3,7 +3,7 @@
 #include "utils.cpp"
 
 #include "../lib/hmac.class.cpp"
-#include "../lib/sha224.class.cpp"
+#include "../lib/sha2_224.class.cpp"
 
 
 struct TV {
@@ -12,7 +12,7 @@ struct TV {
     const char *hash;
 };
 
-TEST(HMAC, SHA224) {
+TEST(HMAC, SHA2_224) {
     const TV tvs[] = {
         /** empty string (short key) */
         {
@@ -88,7 +88,7 @@ TEST(HMAC, SHA224) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
-        HMAC<SHA224_HASH> hmac;
+        HMAC<SHA2_224_HASH> hmac;
 
         /** single-shot */
         {

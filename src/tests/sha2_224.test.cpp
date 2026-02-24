@@ -2,7 +2,7 @@
 
 #include "utils.cpp"
 
-#include "../lib/sha224.class.cpp"
+#include "../lib/sha2_224.class.cpp"
 
 
 struct TV {
@@ -89,7 +89,7 @@ TEST(SHA2, 224) {
 
         std::vector<uint8_t> out_single(expected.size());
         std::vector<uint8_t> out_split(expected.size());
-        SHA224_HASH H;
+        SHA2_224_HASH H;
 
         /** single-shot */
         {

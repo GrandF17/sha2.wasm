@@ -2,12 +2,12 @@
 #define SHA256_CLASS_CPP
 
 
-#include "core/sha256.hpp"
+#include "core/sha2_256.hpp"
 
 
-class SHA256_HASH {
+class SHA2_256_HASH {
 private:
-    using CTX = SHA256::CTX;
+    using CTX = SHA2_256::CTX;
     CTX ctx;
 
 public:
@@ -15,21 +15,21 @@ public:
     static constexpr size_t digest_size = 32;
 
     inline void init() {
-        SHA256::init(ctx);
+        SHA2_256::init(ctx);
     };
 
     inline void update(const uint8_t *message, size_t len) {
-        SHA256::update(ctx, message, len);
+        SHA2_256::update(ctx, message, len);
     };
 
     inline void digest(uint8_t *out) {
-        SHA256::digest(ctx, out);
+        SHA2_256::digest(ctx, out);
     };
 
     inline void destroy() {
-        SHA256::destroy(ctx);
+        SHA2_256::destroy(ctx);
     };
-};  // class SHA256_HASH
+};  // class SHA2_256_HASH
 
 
 #endif  // SHA256_CLASS_CPP

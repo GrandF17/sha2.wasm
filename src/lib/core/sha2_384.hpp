@@ -1,20 +1,20 @@
-#ifndef SHA384_HPP
-#define SHA384_HPP
+#ifndef SHA2_384_HPP
+#define SHA2_384_HPP
 
 
 #include <cstdint>
 #include <cstring>
 
-#include "sha512.hpp"
+#include "sha2_512.hpp"
 
 
-namespace SHA384 {
+namespace SHA2_384 {
     /** renaming the structure name */
-    using CTX = SHA512::CTX;
+    using CTX = SHA2_512::CTX;
 
     inline void init(CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV384, sizeof(ctx.h));
-        ctx.bitlen = 0;
+        ctx.bit_len = 0;
         ctx.buf_len = 0;
         ctx.finalized = false;
     };
@@ -24,19 +24,19 @@ namespace SHA384 {
         const uint8_t* message,
         size_t len
     ) {
-        SHA512::update(ctx, message, len);
+        SHA2_512::update(ctx, message, len);
     };
 
     inline void digest(CTX &ctx, uint8_t *out) {
         uint8_t tmp[64];
-        SHA512::digest(ctx, tmp);
+        SHA2_512::digest(ctx, tmp);
         memcpy(out, tmp, 48 * sizeof(uint8_t));
     };
 
     inline void destroy(CTX &ctx) {
-        SHA512::destroy(ctx);
+        SHA2_512::destroy(ctx);
     };
-};  // namespace SHA384
+};  // namespace SHA2_384
 
 
-#endif  // SHA384_HPP
+#endif  // SHA2_384_HPP

@@ -47,14 +47,14 @@ mkdir wasm ; emcc ./src/lib/sha2.wasm.cpp \
   -s WASM=1 \
   -s EXPORT_NAME=createSHA2Module \
   -s EXPORTED_FUNCTIONS='[
-    "_sha224",
-    "_sha256",
-    "_sha384",
-    "_sha512",
-    "_hmac_sha224",
-    "_hmac_sha256",
-    "_hmac_sha384",
-    "_hmac_sha512",
+    "_sha2_224",
+    "_sha2_256",
+    "_sha2_384",
+    "_sha2_512",
+    "_hmac_sha2_224",
+    "_hmac_sha2_256",
+    "_hmac_sha2_384",
+    "_hmac_sha2_512",
     "_malloc",
     "_free"
   ]' \
@@ -95,13 +95,13 @@ function SHA2() {
     wasm.HEAPU8.set(message, messagePtr);
     wasm.HEAPU8.set(key, keyPtr);
 
-    /** run sha512 hash function */
-    wasm._hmac_sha512(messagePtr, messageLen, keyPtr, keyLen, outPtr);
+    /** run hmac based on sha512 hash function */
+    wasm._hmac_sha2_512(messagePtr, messageLen, keyPtr, keyLen, outPtr);
 
     /** logging the result */
     const result = wasm.HEAPU8.slice(outPtr, outPtr + outLen);
     console.log(
-      "HMAC-SHA512:",
+      "HMAC-SHA2_512:",
       Array.from(result as Uint8Array)
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("")

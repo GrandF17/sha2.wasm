@@ -15,14 +15,14 @@ enable_testing()
 # 
 
 add_executable(sha2
-    sha224.test.cpp
-    sha256.test.cpp
-    sha384.test.cpp
-    sha512.test.cpp
-    hmac_sha224.test.cpp
-    hmac_sha256.test.cpp
-    hmac_sha384.test.cpp
-    hmac_sha512.test.cpp
+    sha2_224.test.cpp
+    sha2_256.test.cpp
+    sha2_384.test.cpp
+    sha2_512.test.cpp
+    hmac_sha2_224.test.cpp
+    hmac_sha2_256.test.cpp
+    hmac_sha2_384.test.cpp
+    hmac_sha2_512.test.cpp
 )
 
 target_link_libraries(sha2

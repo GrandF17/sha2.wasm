@@ -2,12 +2,12 @@
 #define SHA512_CLASS_CPP
 
 
-#include "core/sha512.hpp"
+#include "core/sha2_512.hpp"
 
 
-class SHA512_HASH {
+class SHA2_512_HASH {
 private:
-    using CTX = SHA512::CTX;
+    using CTX = SHA2_512::CTX;
     CTX ctx;
 
 public:
@@ -15,21 +15,21 @@ public:
     static constexpr size_t digest_size = 64;
 
     inline void init() {
-        SHA512::init(ctx);
+        SHA2_512::init(ctx);
     };
 
     inline void update(const uint8_t *message, size_t len) {
-        SHA512::update(ctx, message, len);
+        SHA2_512::update(ctx, message, len);
     };
 
     inline void digest(uint8_t *out) {
-        SHA512::digest(ctx, out);
+        SHA2_512::digest(ctx, out);
     };
 
     inline void destroy() {
-        SHA512::destroy(ctx);
+        SHA2_512::destroy(ctx);
     };
-};  // class SHA512_HASH
+};  // class SHA2_512_HASH
 
 
 #endif  // SHA512_CLASS_CPP

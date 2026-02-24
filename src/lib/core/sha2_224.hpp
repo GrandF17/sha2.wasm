@@ -1,20 +1,20 @@
-#ifndef SHA224_HPP
-#define SHA224_HPP
+#ifndef SHA2_224_HPP
+#define SHA2_224_HPP
 
 
 #include <cstdint>
 #include <cstring>
 
-#include "sha256.hpp"
+#include "sha2_256.hpp"
 
 
-namespace SHA224 {
+namespace SHA2_224 {
     /** renaming the structure name */
-    using CTX = SHA256::CTX;
+    using CTX = SHA2_256::CTX;
 
     inline void init(CTX &ctx) {
         memcpy(ctx.h, SHA2::CONST::IV224, sizeof(ctx.h));
-        ctx.bitlen = 0;
+        ctx.bit_len = 0;
         ctx.buf_len = 0;
         ctx.finalized = false;
     };
@@ -24,19 +24,19 @@ namespace SHA224 {
         const uint8_t* message,
         size_t len
     ) {
-        SHA256::update(ctx, message, len);
+        SHA2_256::update(ctx, message, len);
     };
 
     inline void digest(CTX &ctx, uint8_t *out) {
         uint8_t tmp[32];
-        SHA256::digest(ctx, tmp);
+        SHA2_256::digest(ctx, tmp);
         memcpy(out, tmp, 28 * sizeof(uint8_t));
     };
 
     inline void destroy(CTX &ctx) {
-        SHA256::destroy(ctx);
+        SHA2_256::destroy(ctx);
     };
-};  // namespace SHA224
+};  // namespace SHA2_224
 
 
-#endif  // SHA224_HPP
+#endif  // SHA2_224_HPP

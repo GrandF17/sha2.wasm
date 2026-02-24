@@ -2,12 +2,12 @@
 #define SHA384_CLASS_CPP
 
 
-#include "core/sha384.hpp"
+#include "core/sha2_384.hpp"
 
 
-class SHA384_HASH {
+class SHA2_384_HASH {
 private:
-    using CTX = SHA384::CTX;
+    using CTX = SHA2_384::CTX;
     CTX ctx;
 
 public:
@@ -15,21 +15,21 @@ public:
     static constexpr size_t digest_size = 48;
 
     inline void init() {
-        SHA384::init(ctx);
+        SHA2_384::init(ctx);
     };
 
     inline void update(const uint8_t *message, size_t len) {
-        SHA384::update(ctx, message, len);
+        SHA2_384::update(ctx, message, len);
     };
 
     inline void digest(uint8_t *out) {
-        SHA384::digest(ctx, out);
+        SHA2_384::digest(ctx, out);
     };
 
     inline void destroy() {
-        SHA384::destroy(ctx);
+        SHA2_384::destroy(ctx);
     };
-};  // class SHA384_HASH
+};  // class SHA2_384_HASH
 
 
 #endif  // SHA384_CLASS_CPP

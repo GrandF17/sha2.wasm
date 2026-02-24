@@ -2,12 +2,12 @@
 #define SHA224_CLASS_CPP
 
 
-#include "core/sha224.hpp"
+#include "core/sha2_224.hpp"
 
 
-class SHA224_HASH {
+class SHA2_224_HASH {
 private:
-    using CTX = SHA224::CTX;
+    using CTX = SHA2_224::CTX;
     CTX ctx;
 
 public:
@@ -15,21 +15,21 @@ public:
     static constexpr size_t digest_size = 28;
 
     inline void init() {
-        SHA224::init(ctx);
+        SHA2_224::init(ctx);
     };
 
     inline void update(const uint8_t *message, size_t len) {
-        SHA224::update(ctx, message, len);
+        SHA2_224::update(ctx, message, len);
     };
 
     inline void digest(uint8_t *out) {
-        SHA224::digest(ctx, out);
+        SHA2_224::digest(ctx, out);
     };
 
     inline void destroy() {
-        SHA224::destroy(ctx);
+        SHA2_224::destroy(ctx);
     };
-};  // class SHA224_HASH
+};  // class SHA2_224_HASH
 
 
 #endif  // SHA224_CLASS_CPP
