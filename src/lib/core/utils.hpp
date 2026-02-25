@@ -8,8 +8,8 @@
 namespace Utils {
     /** portable clean function */
     namespace Clean {
-        inline void secure_zero(void* ptr, size_t len) {
-            volatile unsigned char* p =
+        inline void secure_zero(void *ptr, size_t len) {
+            volatile unsigned char *p =
                 reinterpret_cast<volatile unsigned char*>(ptr);
 
             while (len--) {
@@ -24,7 +24,7 @@ namespace Utils {
 
     /** Big-Endian parser/formatter */
     namespace BE {
-        inline uint64_t to64(const uint8_t* p) {
+        inline uint64_t to64(const uint8_t *p) {
             return (
                 ((uint64_t)p[7]      ) |
                 ((uint64_t)p[6] <<  8) |
@@ -37,7 +37,7 @@ namespace Utils {
             );
         };
         
-        inline uint32_t to32(const uint8_t* p) {
+        inline uint32_t to32(const uint8_t *p) {
             return (
                 ((uint32_t)p[3]      ) |
                 ((uint32_t)p[2] <<  8) |
@@ -46,13 +46,13 @@ namespace Utils {
             );
         };
         
-        inline uint8_t from64(const uint64_t* w, size_t i) {
+        inline uint8_t from64(const uint64_t *w, size_t i) {
             size_t word  = i >> 3;
             size_t shift = (7 - (i & 7)) << 3;
             return static_cast<uint8_t>((w[word] >> shift) & 0xFF);
         };
         
-        inline uint8_t from32(const uint32_t* w, size_t i) {
+        inline uint8_t from32(const uint32_t *w, size_t i) {
             size_t word  = i >> 2;
             size_t shift = (3 - (i & 3)) << 3;
             return static_cast<uint8_t>((w[word] >> shift) & 0xFF);
@@ -61,7 +61,7 @@ namespace Utils {
 
     /** Little-Endian parser/formatter */
     namespace LE {
-        inline uint64_t to64(const uint8_t* p) {
+        inline uint64_t to64(const uint8_t *p) {
             return (
                 ((uint64_t)p[0]      ) |
                 ((uint64_t)p[1] <<  8) |
@@ -74,7 +74,7 @@ namespace Utils {
             );
         };
 
-        inline uint32_t to32(const uint8_t* p) {
+        inline uint32_t to32(const uint8_t *p) {
             return (
                 ((uint32_t)p[0]      ) |
                 ((uint32_t)p[1] <<  8) |
@@ -83,13 +83,13 @@ namespace Utils {
             );
         };
         
-        inline uint8_t from64(const uint64_t* w, size_t i) {
+        inline uint8_t from64(const uint64_t *w, size_t i) {
             size_t word  = i >> 3;
             size_t shift = (i & 7) << 3;
             return static_cast<uint8_t>((w[word] >> shift) & 0xFF);
         };
 
-        inline uint8_t from32(const uint32_t* w, size_t i) {
+        inline uint8_t from32(const uint32_t *w, size_t i) {
             size_t word = i >> 2;
             size_t shift = (i & 3) << 3;
             return static_cast<uint8_t>((w[word] >> shift) & 0xFF);

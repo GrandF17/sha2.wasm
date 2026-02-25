@@ -21,7 +21,7 @@ namespace SHA2_384 {
 
     inline void update(
         CTX &ctx,
-        const uint8_t* message,
+        const uint8_t *message,
         size_t len
     ) {
         SHA2_512::update(ctx, message, len);
