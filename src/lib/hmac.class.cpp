@@ -56,7 +56,7 @@ public:
         };
 
         /** secure zeroization of secret */
-        explicit_bzero(secret, sizeof(secret));
+        Utils::Clean::secure_zero(secret, sizeof(secret));
 
         /** init state with ikey */
         H.init();
