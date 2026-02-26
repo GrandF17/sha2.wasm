@@ -1,5 +1,5 @@
-#ifndef SHA512_CLASS_CPP
-#define SHA512_CLASS_CPP
+#ifndef SHA2_512_CLASS_CPP
+#define SHA2_512_CLASS_CPP
 
 
 #include "core/sha2_512.hpp"
@@ -32,4 +32,4 @@ public:
 };  // class SHA2_512_HASH
 
 
-#endif  // SHA512_CLASS_CPP
+#endif  // SHA2_512_CLASS_CPP

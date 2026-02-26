@@ -1,5 +1,5 @@
-#ifndef SHA224_CLASS_CPP
-#define SHA224_CLASS_CPP
+#ifndef SHA2_224_CLASS_CPP
+#define SHA2_224_CLASS_CPP
 
 
 #include "core/sha2_224.hpp"
@@ -32,4 +32,4 @@ public:
 };  // class SHA2_224_HASH
 
 
-#endif  // SHA224_CLASS_CPP
+#endif  // SHA2_224_CLASS_CPP
