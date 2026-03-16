@@ -175,7 +175,7 @@ namespace SHA2_256 {
         ctx.bit_len += len * 8;
 
         while (len > 0) {
-            size_t take = std::min(len, 64 - ctx.buf_len);
+            size_t take = std::min<size_t>(len, 64 - ctx.buf_len);
 
             memcpy(ctx.buf + ctx.buf_len, message, take);
             ctx.buf_len += take;
@@ -206,15 +206,8 @@ namespace SHA2_256 {
         memset(ctx.buf + ctx.buf_len, 0, 56 - ctx.buf_len);
         ctx.buf_len = 56;
 
-        uint64_t bit_len = ctx.bit_len;
-        ctx.buf[56] = (uint8_t)(bit_len >> 56);
-        ctx.buf[57] = (uint8_t)(bit_len >> 48);
-        ctx.buf[58] = (uint8_t)(bit_len >> 40);
-        ctx.buf[59] = (uint8_t)(bit_len >> 32);
-        ctx.buf[60] = (uint8_t)(bit_len >> 24);
-        ctx.buf[61] = (uint8_t)(bit_len >> 16);
-        ctx.buf[62] = (uint8_t)(bit_len >>  8);
-        ctx.buf[63] = (uint8_t)(bit_len      );
+        /** writing down bits length */
+        Utils::BE::store64(ctx.buf + 56, ctx.bit_len);
 
         transform(ctx);
 
@@ -234,7 +227,7 @@ namespace SHA2_256 {
 
     inline void destroy(CTX &ctx) {
         /** secure zeroization of CTX */
-        Utils::Clean::secure_zero(&ctx, sizeof(ctx));
+        Utils::Crypto::secure_zero(&ctx, sizeof(ctx));
     };
 };  // namespace SHA2_256
 

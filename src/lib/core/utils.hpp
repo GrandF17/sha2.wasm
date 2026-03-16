@@ -2,12 +2,9 @@
 #define UTILS_HPP
 
 
-#include <cstdint>
-
-
 namespace Utils {
-    /** portable clean function */
-    namespace Clean {
+    namespace Crypto {
+        /** portable secure clean function */
         inline void secure_zero(void *ptr, size_t len) {
             volatile unsigned char *p =
                 reinterpret_cast<volatile unsigned char*>(ptr);
@@ -19,6 +16,20 @@ namespace Utils {
             #if defined(__GNUC__) || defined(__clang__)
                 __asm__ __volatile__("" : : "r"(ptr) : "memory");
             #endif
+        };
+
+        /** 
+         * constant time comparison of 2 byte arrays
+         * @returns true/false
+         */
+        inline int secure_cmp(const uint8_t *a, const uint8_t *b, size_t len) {
+            uint8_t diff = 0;
+
+            for (size_t i = 0; i < len; ++i) {
+                diff |= a[i] ^ b[i];
+            };
+
+            return (int)(1 & ((diff - 1) >> 8));
         };
     };
 
@@ -44,6 +55,24 @@ namespace Utils {
                 ((uint32_t)p[1] << 16) |
                 ((uint32_t)p[0] << 24)
             );
+        };
+        
+        inline void store64(uint8_t *p, uint64_t v) {
+            p[0] = (uint8_t)(v >> 56);
+            p[1] = (uint8_t)(v >> 48);
+            p[2] = (uint8_t)(v >> 40);
+            p[3] = (uint8_t)(v >> 32);
+            p[4] = (uint8_t)(v >> 24);
+            p[5] = (uint8_t)(v >> 16);
+            p[6] = (uint8_t)(v >>  8);
+            p[7] = (uint8_t)(v      );
+        };
+
+        inline void store32(uint8_t *p, uint32_t v) {
+            p[0] = (uint8_t)(v >> 24);
+            p[1] = (uint8_t)(v >> 16);
+            p[2] = (uint8_t)(v >>  8);
+            p[3] = (uint8_t)(v      );
         };
         
         inline uint8_t from64(const uint64_t *w, size_t i) {
@@ -81,6 +110,24 @@ namespace Utils {
                 ((uint32_t)p[2] << 16) |
                 ((uint32_t)p[3] << 24)
             );
+        };
+
+        inline void store64(uint8_t *p, uint64_t v) {
+            p[0] = (uint8_t)(v      );
+            p[1] = (uint8_t)(v >>  8);
+            p[2] = (uint8_t)(v >> 16);
+            p[3] = (uint8_t)(v >> 24);
+            p[4] = (uint8_t)(v >> 32);
+            p[5] = (uint8_t)(v >> 40);
+            p[6] = (uint8_t)(v >> 48);
+            p[7] = (uint8_t)(v >> 56);
+        };
+
+        inline void store32(uint8_t *p, uint32_t v) {
+            p[0] = (uint8_t)(v      );
+            p[1] = (uint8_t)(v >>  8);
+            p[2] = (uint8_t)(v >> 16);
+            p[3] = (uint8_t)(v >> 24);
         };
         
         inline uint8_t from64(const uint64_t *w, size_t i) {

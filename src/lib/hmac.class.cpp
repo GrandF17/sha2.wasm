@@ -56,7 +56,7 @@ public:
         };
 
         /** secure zeroization of secret */
-        Utils::Clean::secure_zero(secret, sizeof(secret));
+        Utils::Crypto::secure_zero(secret, sizeof(secret));
 
         /** init state with ikey */
         H.init();
@@ -83,8 +83,8 @@ public:
         H.destroy();
 
         /** secure zeroization of ikey + okey */
-        Utils::Clean::secure_zero(ikey, sizeof(ikey));
-        Utils::Clean::secure_zero(okey, sizeof(okey));
+        Utils::Crypto::secure_zero(ikey, sizeof(ikey));
+        Utils::Crypto::secure_zero(okey, sizeof(okey));
     };
 };  // HMAC class
 
