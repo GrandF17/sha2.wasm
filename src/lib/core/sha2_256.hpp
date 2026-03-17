@@ -93,17 +93,14 @@ namespace SHA2_256 {
         uint32_t G = h[6];
         uint32_t H = h[7];
 
-        /** copy of K256 for SHA2-256 */
-        uint32_t k[64] = {0};
-        memcpy(k, SHA2::CONST::K256, 64 * sizeof(uint32_t));
+        /** macros for K256 */
+        const uint32_t *k = SHA2::CONST::K256;
         
         /** extend the first 16 words to 64 */
-        uint32_t w[64] = {0};
+        uint32_t w[64];
         memcpy(w, m, 16 * sizeof(uint32_t));
 
         /** extend + compress (64 rounds) */
-        #pragma omp simd
-        #pragma unroll
         for (size_t i = 0; i < 64; ++i) {
             /** 1) extend */
             if (i >= 16) {

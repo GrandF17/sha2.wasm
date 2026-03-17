@@ -94,16 +94,13 @@ namespace SHA2_512 {
         uint64_t H = h[7];
         
         /** copy of K512 for SHA2-512 */
-        uint64_t k[80] = {0};
-        memcpy(k, SHA2::CONST::K512, 80 * sizeof(uint64_t));
+        const uint64_t *k = SHA2::CONST::K512;
 
         /** extend the first 16 words to 80 */
-        uint64_t w[80] = {0};
+        uint64_t w[80];
         memcpy(w, m, 16 * sizeof(uint64_t));
 
         /** extend + compress (80 rounds) */
-        #pragma omp simd
-        #pragma unroll
         for (size_t i = 0; i < 80; ++i) {
             /** 1) extend */
             if (i >= 16) {
