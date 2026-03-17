@@ -1,5 +1,5 @@
-#ifndef CONST_HPP
-#define CONST_HPP
+#ifndef SHA2_CONST_HPP
+#define SHA2_CONST_HPP
 
 
 #include <cstdint>
@@ -79,4 +79,4 @@ namespace SHA2::CONST {
 };  // namespace SHA2::CONST
 
 
-#endif // CONST_HPP
+#endif // SHA2_CONST_HPP
